@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>保存帖 - 食品の保存方法まとめ</title>
+<title>保存帳 - 食品の保存方法まとめ</title>
 
 <!-- PWA マニフェスト -->
 <link rel="manifest" href="manifest.json">
@@ -12,14 +12,14 @@
 <!-- iOS ホーム画面対応 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="保存帖">
+<meta name="apple-mobile-web-app-title" content="保存帳">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <!-- favicon -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Shippori+Mincho:wght@400;500;700&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Roboto+Condensed:ital,wght@0,400;0,700;1,400&display=swap');
 
   :root{
     --paper: #FAF8F2;
@@ -68,7 +68,7 @@
     z-index:1;
     max-width: 920px;
     margin:0 auto;
-    padding: 0 20px 80px;
+    padding: 0 20px calc(84px + env(safe-area-inset-bottom));
   }
 
   /* ===== Header ===== */
@@ -91,10 +91,10 @@
   }
 
   h1{
-    font-family:'Shippori Mincho', serif;
+    font-family:'Zen Kaku Gothic New', sans-serif;
     font-size: clamp(32px, 6vw, 48px);
-    font-weight:700;
-    letter-spacing:0.04em;
+    font-weight:900;
+    letter-spacing:0.02em;
     line-height:1.3;
     margin-bottom:10px;
   }
@@ -107,6 +107,187 @@
     color: var(--ink-soft);
     letter-spacing:0.08em;
     margin-top:8px;
+  }
+
+  /* ===== Bottom Navigation ===== */
+  .bottom-nav{
+    position:fixed;
+    left:0; right:0; bottom:0;
+    z-index:50;
+    display:flex;
+    background: rgba(250,248,242,0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -4px 16px rgba(31,45,36,0.06);
+  }
+
+  .nav-tab{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    padding:9px 4px 8px;
+    border:none;
+    background:transparent;
+    color: #A8A18C;
+    cursor:pointer;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.02em;
+    transition: color 0.15s ease;
+  }
+
+  .nav-tab svg{
+    width:24px;
+    height:24px;
+    stroke-width:1.8;
+    transition: stroke-width 0.15s ease;
+  }
+
+  .nav-tab.active{
+    color: var(--accent-deep);
+  }
+
+  .nav-tab.active svg{
+    stroke-width:2.3;
+  }
+
+  /* ===== Bento Tab ===== */
+  .bento-intro{
+    background: var(--paper-deep);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-bottom:20px;
+  }
+
+  .bento-intro p{
+    font-size:13.5px;
+    line-height:1.65;
+    color: var(--ink-soft);
+  }
+
+  .bento-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:20px;
+  }
+
+  .bento-filter-btn{
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    padding:7px 16px;
+    border:1.5px solid var(--line);
+    border-radius:100px;
+    background: var(--paper);
+    color: var(--ink-soft);
+    cursor:pointer;
+    transition: all 0.18s ease;
+  }
+
+  .bento-filter-btn:hover{
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .bento-filter-btn.active{
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .bento-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .bento-item{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    background: var(--paper);
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    padding:16px;
+  }
+
+  .bento-badge{
+    flex-shrink:0;
+    width:52px;
+    text-align:center;
+    padding:6px 4px;
+    border-radius:6px;
+    font-family:'Roboto Condensed', sans-serif;
+  }
+
+  .bento-badge .bb-icon{
+    font-size:20px;
+    font-weight:700;
+    display:block;
+    line-height:1;
+  }
+
+  .bento-badge .bb-label{
+    font-size:10px;
+    font-weight:700;
+    display:block;
+    margin-top:4px;
+    line-height:1.3;
+  }
+
+  .bento-body{
+    flex:1;
+  }
+
+  .bento-name{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+
+  .bento-name .bn-emoji{
+    font-size:20px;
+  }
+
+  .bento-reason{
+    font-size:13.5px;
+    line-height:1.6;
+    color: var(--ink-soft);
+    margin-bottom:8px;
+  }
+
+  .bento-tips{
+    font-size:12.5px;
+    line-height:1.7;
+    color: var(--ink);
+    background: var(--paper-deep);
+    border-radius:6px;
+    padding:10px 12px;
+  }
+
+  .bento-tips div{
+    position:relative;
+    padding-left:14px;
+  }
+
+  .bento-tips div::before{
+    content:"・";
+    position:absolute;
+    left:0;
+  }
+
+  .bento-tips div + div{
+    margin-top:4px;
   }
 
   /* ===== Search ===== */
@@ -225,17 +406,22 @@
   }
 
   .food-icon{
-    font-size:28px;
-    line-height:1;
     width:44px; height:44px;
     display:flex; align-items:center; justify-content:center;
     background: var(--paper-deep);
     border-radius:50%;
     flex-shrink:0;
+    overflow:hidden;
+  }
+
+  .food-icon img{
+    width:76%;
+    height:76%;
+    object-fit:contain;
   }
 
   .food-name{
-    font-family:'Shippori Mincho', serif;
+    font-family:'Zen Kaku Gothic New', sans-serif;
     font-size:18px;
     font-weight:700;
   }
@@ -293,7 +479,7 @@
   }
 
   .empty-state p{
-    font-family:'Shippori Mincho', serif;
+    font-family:'Zen Kaku Gothic New', sans-serif;
     font-size:17px;
   }
 
@@ -378,13 +564,15 @@
 
   .karte-title .food-icon{
     background: rgba(250,248,242,0.12);
-    font-size:32px;
+    width:64px;
+    height:64px;
   }
 
   .karte-title h2{
-    font-family:'Shippori Mincho', serif;
+    font-family:'Zen Kaku Gothic New', sans-serif;
     font-size:28px;
-    font-weight:700;
+    font-weight:900;
+    letter-spacing:0.01em;
   }
 
   .karte-body{
@@ -497,7 +685,7 @@
   }
 
   .tip-box .tip-mark{
-    font-family:'Shippori Mincho', serif;
+    font-family:'Zen Kaku Gothic New', sans-serif;
     font-size:20px;
     color: var(--accent-deep);
     font-weight:900;
@@ -567,40 +755,65 @@
 <div class="wrap">
   <header>
     <div class="eyebrow">Food Storage Notebook</div>
-    <h1>保存帖
+    <h1>たべものの保存帳
       <small>食品ごとの保存方法を、ひと目で。常温・冷蔵・冷凍の目安日数とコツをまとめました。</small>
     </h1>
   </header>
 
-  <div class="search-zone">
-    <div class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input type="text" id="search-input" placeholder="食品名で検索（例：トマト、鶏肉、牛乳）">
+  <div id="tab-food">
+    <div class="search-zone">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="search-input" placeholder="食品名で検索（例：トマト、鶏肉、牛乳）">
+      </div>
+      <div class="category-filters" id="category-filters"></div>
     </div>
-    <div class="category-filters" id="category-filters"></div>
+
+    <div class="result-meta">
+      <span id="result-count"></span>
+      <span>収録 <b id="total-count">0</b> 品目</span>
+    </div>
+
+    <div class="food-grid" id="food-grid"></div>
+
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <span class="empty-icon">🔍</span>
+      <p>該当する食品が見つかりませんでした</p>
+      <span>食品名やカテゴリを変えて試してみてください</span>
+    </div>
   </div>
 
-  <div class="result-meta">
-    <span id="result-count"></span>
-    <span>収録 <b id="total-count">0</b> 品目</span>
+  <div id="tab-bento" style="display:none;">
+    <div class="bento-intro">
+      <p>お弁当に入れる料理が傷みにくいかどうかの目安をまとめました。気温や持ち歩く時間によっても変わるので、参考の一つとしてご覧ください。</p>
+    </div>
+
+    <div class="bento-filters" id="bento-filters"></div>
+
+    <div class="bento-list" id="bento-list"></div>
   </div>
 
-  <div class="food-grid" id="food-grid"></div>
-
-  <div class="empty-state" id="empty-state" style="display:none;">
-    <span class="empty-icon">🔍</span>
-    <p>該当する食品が見つかりませんでした</p>
-    <span>食品名やカテゴリを変えて試してみてください</span>
-  </div>
-
-  <footer>保存帖 — よくある食品の保存方法リファレンス</footer>
+  <footer>たべものの保存帳 — よくある食品の保存方法リファレンス</footer>
 </div>
+
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-tab active" data-tab="food">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M15 4v5h5"></path><line x1="8" y1="12" x2="16" y2="12"></line><line x1="8" y1="16" x2="13" y2="16"></line></svg>
+    <span>食品</span>
+  </button>
+  <button class="nav-tab" data-tab="bento">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="9" width="18" height="11" rx="2"></rect><path d="M8 9V7a4 4 0 0 1 8 0v2"></path><line x1="3" y1="14" x2="21" y2="14"></line></svg>
+    <span>お弁当</span>
+  </button>
+</nav>
 
 <div class="modal-overlay" id="modal-overlay">
   <div class="karte" id="karte-content"></div>
 </div>
 
 <script src="data.js"></script>
+<script src="bento_data.js"></script>
+<script src="icons.js"></script>
 <script>
   const grid = document.getElementById('food-grid');
   const searchInput = document.getElementById('search-input');
@@ -689,7 +902,7 @@
       return `
         <div class="food-card" data-id="${food.id}">
           <div class="food-card-head">
-            <div class="food-icon">${food.icon}</div>
+            <div class="food-icon"><img src="${FOOD_ICONS[food.id] || ''}" alt="${food.name}" loading="lazy"></div>
             <div>
               <div class="food-name">${food.name}</div>
               <div class="food-cat">${CATEGORY_LABELS[food.category]}</div>
@@ -744,7 +957,7 @@
         <button class="karte-close" id="karte-close">✕</button>
         <div class="karte-eyebrow">${CATEGORY_LABELS[food.category]} / Storage Karte</div>
         <div class="karte-title">
-          <div class="food-icon">${food.icon}</div>
+          <div class="food-icon"><img src="${FOOD_ICONS[food.id] || ''}" alt="${food.name}"></div>
           <h2>${food.name}</h2>
         </div>
       </div>
@@ -781,6 +994,79 @@
     searchTerm = e.target.value.trim();
     renderGrid();
   });
+
+  // ===== 下部ナビタブ切り替え =====
+  const bottomNav = document.getElementById('bottom-nav');
+  const tabFood = document.getElementById('tab-food');
+  const tabBento = document.getElementById('tab-bento');
+
+  bottomNav.querySelectorAll('.nav-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bottomNav.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (btn.dataset.tab === 'food') {
+        tabFood.style.display = '';
+        tabBento.style.display = 'none';
+      } else {
+        tabFood.style.display = 'none';
+        tabBento.style.display = '';
+      }
+      window.scrollTo({top: 0, behavior: 'instant'});
+    });
+  });
+
+  // ===== お弁当タブ =====
+  const bentoFilters = document.getElementById('bento-filters');
+  const bentoList = document.getElementById('bento-list');
+  let activeBentoFilter = 'all';
+
+  const BENTO_FILTER_LABELS = {
+    all: 'すべて',
+    good: '◎ 向いている',
+    caution: '△ 注意すれば◯',
+    bad: '× 向いていない'
+  };
+
+  function renderBentoFilters(){
+    const keys = ['all', 'good', 'caution', 'bad'];
+    bentoFilters.innerHTML = keys.map(k =>
+      `<button class="bento-filter-btn ${k === activeBentoFilter ? 'active' : ''}" data-filter="${k}">${BENTO_FILTER_LABELS[k]}</button>`
+    ).join('');
+
+    bentoFilters.querySelectorAll('.bento-filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        activeBentoFilter = btn.dataset.filter;
+        renderBentoFilters();
+        renderBentoList();
+      });
+    });
+  }
+
+  function renderBentoList(){
+    const items = activeBentoFilter === 'all'
+      ? BENTO_DATA
+      : BENTO_DATA.filter(b => b.suitability === activeBentoFilter);
+
+    bentoList.innerHTML = items.map(b => {
+      const info = SUITABILITY_LABELS[b.suitability];
+      const tipsHtml = b.tips.map(t => `<div>${t}</div>`).join('');
+      return `
+        <div class="bento-item">
+          <div class="bento-badge" style="background:${info.bgColor}22; color:${info.color};">
+            <span class="bb-icon">${b.suitability === 'good' ? '◎' : b.suitability === 'caution' ? '△' : '×'}</span>
+            <span class="bb-label">${info.label}</span>
+          </div>
+          <div class="bento-body">
+            <div class="bento-name"><span class="bn-emoji">${b.icon}</span>${b.name}</div>
+            <div class="bento-reason">${b.reason}</div>
+            <div class="bento-tips">${tipsHtml}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  renderBentoFilters();
+  renderBentoList();
 
   // 初期化
   totalCount.textContent = FOOD_DATA.length;
