@@ -1,9 +1,11 @@
-// 保存帖 - Service Worker（オフライン対応）
-const CACHE_NAME = 'hozoncho-v1';
+// たべものの保存帳 - Service Worker（オフライン対応）
+const CACHE_NAME = 'hozoncho-v2';
 const ASSETS = [
   './',
   './index.html',
   './data.js',
+  './bento_data.js',
+  './icons.js',
   './manifest.json',
   './apple-touch-icon.png',
   './icon-192.png',
